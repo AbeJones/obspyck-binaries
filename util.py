@@ -804,9 +804,9 @@ class MultiCursor(MplMultiCursor):
 
     
 
-def lonlatconv(x, y):
+def latlongconv(x, y):
     lat = -37 +(y/111.111)
-    lon = 144+ (x/(111.111*math.cos(math.radians(-37.346500347))))
+    lon = 144+ (x/(111.111*math.cos((2*math.pi)/-38.5)))
     return (lon, lat)
 
 def readNLLocScatter(scat_filename, textviewStdErrImproved):
@@ -823,7 +823,7 @@ def readNLLocScatter(scat_filename, textviewStdErrImproved):
     data = np.fromfile(scat_filename, dtype="<f4").astype("float")[4:]
     data = data.reshape((len(data)/4, 4)).swapaxes(0, 1)
     #lon, lat = gk2lonlat(data[0], data[1])
-    lon, lat = lonlatconv(data[0], data[1])
+    lon, lat = latlongconv(data[0], data[1])
     return np.vstack((lon, lat, data[2]))
 
 def errorEllipsoid2CartesianErrors(azimuth1, dip1, len1, azimuth2, dip2, len2,
