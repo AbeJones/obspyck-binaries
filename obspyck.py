@@ -1917,7 +1917,7 @@ class ObsPyck(QtGui.QMainWindow):
         x = float(line[2])
         y = float(line[4])
         depth = - float(line[6]) # depth: negative down!
-        lon, lat = lonlatconv(x, y)
+        lon, lat = latlongconv(x, y)
         #lon, lat = (x, y)
 #        lon, lat = gk2lonlat(x, y)
         
