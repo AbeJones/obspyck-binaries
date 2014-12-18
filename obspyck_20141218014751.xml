@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ns0:quakeml xmlns:ns0="http://quakeml.org/xmlns/quakeml/1.2" xmlns="http://quakeml.org/xmlns/bed/1.2">
+  <eventParameters publicID="smi:de.erdbeben-in-bayern/catalog/20141218014751">
+    <event publicID="smi:de.erdbeben-in-bayern/event/20141218014751">
+      <creationInfo>
+        <agencyID>Erdbebendienst Bayern</agencyID>
+        <agencyURI>smi:de.erdbeben-in-bayern/agency</agencyURI>
+        <author>abe</author>
+      </creationInfo>
+      <origin publicID="smi:de.erdbeben-in-bayern/origin/c0d6ac07-c9f9-4c7d-abc6-98b0558ad423">
+        <time>
+          <value>2014-10-17T08:13:42.737099Z</value>
+        </time>
+        <latitude>
+          <value>-38.2575082575</value>
+        </latitude>
+        <longitude>
+          <value>145.802715408</value>
+        </longitude>
+        <depth>
+          <value>14218.8</value>
+          <uncertainty>6508.23856461</uncertainty>
+        </depth>
+        <depthType>from location</depthType>
+        <methodID>smi:de.erdbeben-in-bayern/location_method/nlloc/3</methodID>
+        <earthModelID>smi:de.erdbeben-in-bayern/earth_model/layer</earthModelID>
+        <quality>
+          <usedPhaseCount>7</usedPhaseCount>
+          <standardError>0.022</standardError>
+          <azimuthalGap>223.1</azimuthalGap>
+          <secondaryAzimuthalGap>257.3</secondaryAzimuthalGap>
+          <minimumDistance>0.0426377366582</minimumDistance>
+          <maximumDistance>0.329303693118</maximumDistance>
+          <medianDistance>0.216999108935</medianDistance>
+        </quality>
+        <originUncertainty>
+          <preferredDescription>uncertainty ellipse</preferredDescription>
+          <minHorizontalUncertainty>3132.15619448</minHorizontalUncertainty>
+          <maxHorizontalUncertainty>11324.8998927</maxHorizontalUncertainty>
+          <azimuthMaxHorizontalUncertainty>90.0</azimuthMaxHorizontalUncertainty>
+        </originUncertainty>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/11e54491-a5f4-4505-bfc7-b54e593be88a">
+          <pickID>smi:de.erdbeben-in-bayern/pick/da5045dc-2f31-437c-93ec-da85c66d13ac</pickID>
+          <phase>P</phase>
+          <azimuth>325.4</azimuth>
+          <distance>0.0426377366582</distance>
+          <takeoffAngle>
+            <value>159.8</value>
+          </takeoffAngle>
+          <timeResidual>-0.0266</timeResidual>
+          <timeWeight>0.9083</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/fb47396e-3f1f-4c90-b4f6-79305a04c081">
+          <pickID>smi:de.erdbeben-in-bayern/pick/a9aa914a-769c-46af-b65b-2a7a70fcba4b</pickID>
+          <phase>P</phase>
+          <azimuth>279.2</azimuth>
+          <distance>0.0498440006864</distance>
+          <takeoffAngle>
+            <value>157.2</value>
+          </takeoffAngle>
+          <timeResidual>0.0172</timeResidual>
+          <timeWeight>1.0374</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/c2009fcc-f282-4b7a-9c94-021046458672">
+          <pickID>smi:de.erdbeben-in-bayern/pick/9f3f6854-86be-46eb-aa14-cda93485bf24</pickID>
+          <phase>P</phase>
+          <azimuth>245.9</azimuth>
+          <distance>0.20755443343</distance>
+          <takeoffAngle>
+            <value>115.3</value>
+          </takeoffAngle>
+          <timeResidual>0.038</timeResidual>
+          <timeWeight>1.0273</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/3e41d9ad-d017-47d4-8a59-2b8b954045e9">
+          <pickID>smi:de.erdbeben-in-bayern/pick/0154deb0-7d52-4571-91ec-4ea8e514767c</pickID>
+          <phase>P</phase>
+          <azimuth>208.7</azimuth>
+          <distance>0.216999108935</distance>
+          <takeoffAngle>
+            <value>114.2</value>
+          </takeoffAngle>
+          <timeResidual>-0.0135</timeResidual>
+          <timeWeight>1.0304</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/3f8c3963-9b20-4677-987b-5ff229aa3355">
+          <pickID>smi:de.erdbeben-in-bayern/pick/9b59603f-9245-4bdb-8117-d9d3c9e53dc4</pickID>
+          <phase>P</phase>
+          <azimuth>247.3</azimuth>
+          <distance>0.235324585299</distance>
+          <takeoffAngle>
+            <value>112.1</value>
+          </takeoffAngle>
+          <timeResidual>-0.0194</timeResidual>
+          <timeWeight>1.0304</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/f753bd95-bb95-432f-99f9-15f1c593c8a3">
+          <pickID>smi:de.erdbeben-in-bayern/pick/09391dfb-1491-4419-94cb-5980d7493361</pickID>
+          <phase>P</phase>
+          <azimuth>345.6</azimuth>
+          <distance>0.264186513598</distance>
+          <takeoffAngle>
+            <value>109.3</value>
+          </takeoffAngle>
+          <timeResidual>0.0149</timeResidual>
+          <timeWeight>0.953</timeWeight>
+        </arrival>
+        <arrival publicID="smi:de.erdbeben-in-bayern/arrival/5d2c576f-01fc-488c-849f-0b3263c8c5a9">
+          <pickID>smi:de.erdbeben-in-bayern/pick/6da442d3-ec60-4e80-b201-9b3f4cba3d67</pickID>
+          <phase>P</phase>
+          <azimuth>242.9</azimuth>
+          <distance>0.329303693118</distance>
+          <takeoffAngle>
+            <value>104.5</value>
+          </takeoffAngle>
+          <timeResidual>-0.0128</timeResidual>
+          <timeWeight>1.0131</timeWeight>
+        </arrival>
+      </origin>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/da5045dc-2f31-437c-93ec-da85c66d13ac">
+        <time>
+          <value>2014-10-17T08:13:45.445000Z</value>
+          <lowerUncertainty>0.05</lowerUncertainty>
+          <upperUncertainty>0.03</upperUncertainty>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="" networkCode="UM" stationCode="BD5E"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/6da442d3-ec60-4e80-b201-9b3f4cba3d67">
+        <time>
+          <value>2014-10-17T08:13:49.500000Z</value>
+          <lowerUncertainty>0.035</lowerUncertainty>
+          <upperUncertainty>0.005</upperUncertainty>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="" networkCode="UM" stationCode="BD70"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/9b59603f-9245-4bdb-8117-d9d3c9e53dc4">
+        <time>
+          <value>2014-10-17T08:13:47.930000Z</value>
+          <lowerUncertainty>0.01</lowerUncertainty>
+          <upperUncertainty>0.02</upperUncertainty>
+        </time>
+        <waveformID channelCode="BHZ" locationCode="" networkCode="UM" stationCode="BD91"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/09391dfb-1491-4419-94cb-5980d7493361">
+        <time>
+          <value>2014-10-17T08:13:48.420000Z</value>
+          <lowerUncertainty>0.03</lowerUncertainty>
+          <upperUncertainty>0.035</upperUncertainty>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="A" networkCode="01" stationCode="CLIF"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/9f3f6854-86be-46eb-aa14-cda93485bf24">
+        <time>
+          <value>2014-10-17T08:13:47.528000Z</value>
+          <lowerUncertainty>0.02</lowerUncertainty>
+          <upperUncertainty>0.012</upperUncertainty>
+        </time>
+        <waveformID channelCode="DHZ" locationCode="A" networkCode="01" stationCode="HOLS"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/0154deb0-7d52-4571-91ec-4ea8e514767c">
+        <time>
+          <value>2014-10-17T08:13:47.635000Z</value>
+          <lowerUncertainty>0.025</lowerUncertainty>
+          <upperUncertainty>0.005</upperUncertainty>
+        </time>
+        <waveformID channelCode="EHZ" locationCode="A" networkCode="01" stationCode="MRDN"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+      <pick publicID="smi:de.erdbeben-in-bayern/pick/a9aa914a-769c-46af-b65b-2a7a70fcba4b">
+        <time>
+          <value>2014-10-17T08:13:45.535000Z</value>
+          <lowerUncertainty>0.01</lowerUncertainty>
+          <upperUncertainty>0.015</upperUncertainty>
+        </time>
+        <waveformID channelCode="ENZ" locationCode="A" networkCode="01" stationCode="NARR"></waveformID>
+        <phaseHint>P</phaseHint>
+      </pick>
+    </event>
+  </eventParameters>
+</ns0:quakeml>

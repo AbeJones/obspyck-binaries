@@ -19,6 +19,7 @@ import tempfile
 import socket
 from StringIO import StringIO
 import logging
+import math
 
 from PyQt4 import QtGui, QtCore
 from PyQt4.QtCore import QEvent, Qt
@@ -36,7 +37,6 @@ from lxml.etree import SubElement as Sub
 
 #sys.path.append('/baysoft/obspy/misc/symlink')
 #os.chdir("/baysoft/obspyck/")
-from obspy import __version__ as OBSPY_VERSION
 from obspy.core.util import NamedTemporaryFile, AttribDict
 from obspy.core.util.geodetics import gps2DistAzimuth, kilometer2degrees
 from obspy import UTCDateTime, Stream#, readEvents
@@ -1866,13 +1866,12 @@ class ObsPyck(QtGui.QMainWindow):
         """
         prog_dict = PROGRAMS['nlloc']
         files = prog_dict['files']
-        # determine which model should be used in location
-        controlfilename = "locate_%s.nlloc" % \
-                          str(self.widgets.qComboBox_nllocModel.currentText())
-
+        #determine which model should be used in location
+        #controlfilename = "locate_%s.nlloc" % \
+        #                  str(self.widgets.qComboBox_nllocModel.currentText())
+        controlfilename = "locate_RH.nlloc"
         precall = prog_dict['PreCall']
         precall(prog_dict)
-
         f = open(files['phases'], 'wt')
         phases_nlloc = self.dicts2NLLocPhases()
         f.write(phases_nlloc)
@@ -1903,21 +1902,6 @@ class ObsPyck(QtGui.QMainWindow):
                     files['summary']
             self.error(err)
             return
-        # goto signature info line
-        try:
-            line = lines.pop(0)
-            while not line.startswith("SIGNATURE"):
-                line = lines.pop(0)
-        except:
-            err = "Error: No correct location info found in NLLoc " + \
-                  "outputfile (%s)!" % files['summary']
-            self.error(err)
-            return
-
-        line = line.rstrip().split('"')[1]
-        signature, nlloc_version, date, time = line.rsplit(" ", 3)
-        creation_time = UTCDateTime().strptime(date + time, str("%d%b%Y%Hh%Mm%S"))
-
         # goto maximum likelihood origin location info line
         try:
             line = lines.pop(0)
@@ -1933,9 +1917,8 @@ class ObsPyck(QtGui.QMainWindow):
         x = float(line[2])
         y = float(line[4])
         depth = - float(line[6]) # depth: negative down!
-
-        lon, lat = latlongconv(x, y)
-
+        lon, lat = lonlatconv(x, y)
+        #lon, lat = (x, y)
 #        lon, lat = gk2lonlat(x, y)
         
         # goto origin time info line
@@ -1957,6 +1940,10 @@ class ObsPyck(QtGui.QMainWindow):
         minute = int(line[6])
         seconds = float(line[7])
         time = UTCDateTime(year, month, day, hour, minute, seconds)
+#        x = float(line[11])
+#        y = float(line[9])
+#        depth = - float(line[13]) # depth: negative down!        
+#        lon, lat = v(x, y)
 
         # goto location quality info line
         try:
@@ -2022,18 +2009,10 @@ class ObsPyck(QtGui.QMainWindow):
         model = line2[3]
         model = model.split("/")[-1]
 
-        catalog = self.catalog
-        event = catalog[0]
-        if event.creation_info is None:
-            event.creation_info = CreationInfo()
-            event.creation_info.creation_time = UTCDateTime()
-        o = Origin()
-        event.origins = [o]
-        o.creation_info = CreationInfo(creation_time=creation_time,
-                                       version=nlloc_version)
-
         # assign origin info
-        o.method_id = "/".join([ID_ROOT, "location_method", "nlloc", "4"])
+        o = Origin()
+        self.catalog[0].origins = [o]
+        o.method_id = "/".join([ID_ROOT, "location_method", "nlloc", "3"])
         o.origin_uncertainty = OriginUncertainty()
         o.quality = OriginQuality()
         ou = o.origin_uncertainty
@@ -2221,6 +2200,8 @@ class ObsPyck(QtGui.QMainWindow):
         data = readNLLocScatter(PROGRAMS['nlloc']['files']['scatter'],
                                 self.widgets.qPlainTextEdit_stderr)
         o.nonlinloc_scatter = data
+
+
 
     def loadHyp2000Data(self):
         files = PROGRAMS['hyp_2000']['files']
@@ -2416,8 +2397,6 @@ class ObsPyck(QtGui.QMainWindow):
             return
 
         m = Magnitude()
-        m.creation_info = CreationInfo(version="ObsPy %s" % OBSPY_VERSION,
-                                       creation_time=UTCDateTime())
         event.magnitudes = [m]
         m.method_id = "/".join([ID_ROOT, "magnitude_method", "obspyck", "2"])
         m.origin_id = origin.resource_id
@@ -2497,21 +2476,13 @@ class ObsPyck(QtGui.QMainWindow):
             channels = []
             p2ps = []
             for amplitude in self.getAmplitudes(net, sta, loc):
-                self.debug(str(amplitude))
                 timedelta = amplitude.get_timedelta()
-                self.debug("Timedelta: " + str(timedelta))
                 if timedelta is None:
                     continue
                 tr = self.getTrace(
                     seed_string=amplitude.waveform_id.getSEEDString())
                 paz = tr.stats.get("paz")
-                self.debug("PAZ: " + str(paz))
                 if paz is None:
-                    # XXX TODO we could fetch the metadata from seishub if we
-                    # don't have a trace with PAZ and still use the stored info
-                    msg = ("Skipping amplitude for station "
-                           "'%s': Missing PAZ metadata" % sta)
-                    self.error(msg)
                     continue
                 amplitudes.append(amplitude)
                 p2ps.append(amplitude.get_p2p())
@@ -2519,7 +2490,12 @@ class ObsPyck(QtGui.QMainWindow):
                 pazs.append(paz)
                 channels.append(tr.stats.channel)
 
+            # XXX TODO we could fetch the metadata from seishub if we don't
+            # have a trace with PAZ and still use the stored info
             if not amplitudes:
+                msg = ("Skipping amplitude for station "
+                       "'%s' (missing PAZ metadata?)" % sta)
+                self.error(msg)
                 continue
 
             dist = self.hypoDist(tr.stats.coordinates)
@@ -2683,7 +2659,7 @@ class ObsPyck(QtGui.QMainWindow):
             # plot picks and arrivals
             # seiscomp does not store location code with picks, so allow to
             # match any location code in that case..
-            if str(event.get("creation_info", {}).get("author", "")).startswith("scevent"):
+            if event.get("creation_info", {}).get("author", "").startswith("scevent"):
                 loc = None
             picks = self.getPicks(network=net, station=sta, location=loc)
             try:
@@ -2779,10 +2755,6 @@ class ObsPyck(QtGui.QMainWindow):
             info.append(" Longitude: %.5f" % o.longitude)
             info.append(" Latitude: %.5f" % o.latitude)
         info.append(" Depth: %.3f km +/- %0.2fkm" % (o.depth / 1e3, o.depth_errors.uncertainty / 1e3))
-        if o.quality and o.quality.standard_error:
-            info.append(" RMS: %.5f" % o.quality.standard_error)
-        else:
-            info.append(" RMS: ---")
         if m is not None:
             m_ = m.mag
             m_err_ = m.mag_errors.uncertainty
@@ -3258,7 +3230,6 @@ class ObsPyck(QtGui.QMainWindow):
         Returns all information as xml file (type string)
         """
         cat = self.catalog
-        cat.creation_info.creation_time = UTCDateTime()
         e = cat[0]
         extra = e.setdefault("extra", AttribDict())
         public = self.widgets.qCheckBox_public.isChecked()
@@ -3873,8 +3844,8 @@ class ObsPyck(QtGui.QMainWindow):
         for ampl in ev.amplitudes:
             # only works for events created with obspyck as only in that case
             # we know the logic of the magnitude picking
-            if "/obspyck/" not in str(ampl.method_id) or str(ampl.method_id).endswith("/obspyck/1"):
-                msg = "Skipping amplitude not set with obspyck (or with old version)."
+            if not str(ampl.method_id).endswith("/amplitude_method/obspyck/2"):
+                msg = "Skipping amplitude not set with obspyck."
                 self.error(msg)
                 continue
             tr = self.getTrace(ampl.waveform_id.getSEEDString())
